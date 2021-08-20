@@ -1,5 +1,4 @@
 import * as core from '@actions/core'
-import * as fs from 'fs/promises'
 import { prependComment } from './file'
 
 const getInputs = (): Inputs => {
@@ -13,23 +12,23 @@ const getInputs = (): Inputs => {
 
 const run = async (): Promise<void> => {
     try {
-        const inputs = getInputs();
-        const comment = formatComment(inputs);
+        const inputs = getInputs()
+        const comment = formatComment(inputs)
 
-        const workspace = process.env.GITHUB_WORKSPACE as string;
-        const filePath = `${workspace}/${inputs.filePath}`;
+        const workspace = process.env.GITHUB_WORKSPACE as string
+        const filePath = `${workspace}/${inputs.filePath}`
 
-        await prependComment(filePath, comment);
+        await prependComment(filePath, comment)
     } catch (error) {
         core.setFailed(error.message)
     }
 }
 
 interface Inputs {
-    name: string,
-    sha: string,
-    comment: string,
-    repoLink: string,
+    name: string
+    sha: string
+    comment: string
+    repoLink: string
     filePath: string
 }
 

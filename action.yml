@@ -5,18 +5,13 @@ inputs:
     name:
         required: true
         description: 'The name of the bundle'
-    sha:
-        required: true
-        description: 'The SHA of the commit that created the bundle'
     comment:
-        required: true
+        required: false
         description: 'The comment to be added to the bundle'
-    repoLink:
-        required: true
-        description: 'The link to the repository'
+        default: 'Bundled by ECCC'
     filePath:
         required: true
         description: 'The file to be commented on'
 runs:
-    using: 'node12'
+    using: 'node14'
     main: 'dist/index.js'

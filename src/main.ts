@@ -3,11 +3,9 @@ import { prependComment } from './file'
 
 const getInputs = (): Inputs => {
     const name: string = core.getInput('name')
-    const sha: string = core.getInput('sha')
     const comment: string = core.getInput('comment')
-    const repoLink: string = core.getInput('repoLink')
     const filePath: string = core.getInput('filePath')
-    return { name, sha, comment, repoLink, filePath }
+    return { name, comment, filePath }
 }
 
 const run = async (): Promise<void> => {
@@ -26,20 +24,21 @@ const run = async (): Promise<void> => {
 
 interface Inputs {
     name: string
-    sha: string
     comment: string
-    repoLink: string
     filePath: string
 }
 
-const formatComment = ({ name, sha, comment, repoLink }: Inputs): string => `
-/**
+const formatComment = ({ name, comment }: Inputs): string => {
+    const sha = process.env.GITHUB_SHA as string
+    const repo = process.env.GITHUB_REPOSITORY as string
+    const server = process.env.GITHUB_SERVER_URL as string
+    return `/**
  * ${name} - Edmonton Christian Community Church
- * Created via commit ${sha} at ${repoLink}
+ * Created via commit ${sha} at ${repo}
  * ${comment}
- * ${repoLink}/commit/${sha}
+ * ${server}/${repo}/commit/${sha}
  */
-
 `
+}
 
 run()

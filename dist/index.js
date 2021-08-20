@@ -73,11 +73,9 @@ const core = __importStar(__nccwpck_require__(186));
 const file_1 = __nccwpck_require__(14);
 const getInputs = () => {
     const name = core.getInput('name');
-    const sha = core.getInput('sha');
     const comment = core.getInput('comment');
-    const repoLink = core.getInput('repoLink');
     const filePath = core.getInput('filePath');
-    return { name, sha, comment, repoLink, filePath };
+    return { name, comment, filePath };
 };
 const run = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -91,15 +89,18 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
         core.setFailed(error.message);
     }
 });
-const formatComment = ({ name, sha, comment, repoLink }) => `
-/**
+const formatComment = ({ name, comment }) => {
+    const sha = process.env.GITHUB_SHA;
+    const repo = process.env.GITHUB_REPOSITORY;
+    const server = process.env.GITHUB_SERVER_URL;
+    return `/**
  * ${name} - Edmonton Christian Community Church
- * Created via commit ${sha} at ${repoLink}
+ * Created via commit ${sha} at ${repo}
  * ${comment}
- * ${repoLink}/commit/${sha}
+ * ${server}/${repo}/commit/${sha}
  */
-
 `;
+};
 run();
 
 

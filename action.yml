@@ -1,11 +1,22 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'Bundle Comments'
+description: 'Automatically creates a comment in the bundled code'
+author: 'Joshua Ji - ECCC'
 inputs:
-  milliseconds: # change this
-    required: true
-    description: 'input description here'
-    default: 'default value if applicable'
+    name:
+        required: true
+        description: 'The name of the bundle'
+    sha:
+        required: true
+        description: 'The SHA of the commit that created the bundle'
+    comment:
+        required: true
+        description: 'The comment to be added to the bundle'
+    repoLink:
+        required: true
+        description: 'The link to the repository'
+    filePath:
+        required: true
+        description: 'The file to be commented on'
 runs:
-  using: 'node12'
-  main: 'dist/index.js'
+    using: 'node12'
+    main: 'dist/index.js'

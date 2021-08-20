@@ -1,19 +1,46 @@
 import * as core from '@actions/core'
-import {wait} from './wait'
+import * as fs from 'fs/promises'
+import { prependComment } from './file'
 
-async function run(): Promise<void> {
-  try {
-    const ms: string = core.getInput('milliseconds')
-    core.debug(`Waiting ${ms} milliseconds ...`) // debug is only output if you set the secret `ACTIONS_RUNNER_DEBUG` to true
-
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
-
-    core.setOutput('time', new Date().toTimeString())
-  } catch (error) {
-    core.setFailed(error.message)
-  }
+const getInputs = (): Inputs => {
+    const name: string = core.getInput('name')
+    const sha: string = core.getInput('sha')
+    const comment: string = core.getInput('comment')
+    const repoLink: string = core.getInput('repoLink')
+    const filePath: string = core.getInput('filePath')
+    return { name, sha, comment, repoLink, filePath }
 }
+
+const run = async (): Promise<void> => {
+    try {
+        const inputs = getInputs();
+        const comment = formatComment(inputs);
+
+        const workspace = process.env.GITHUB_WORKSPACE as string;
+        const filePath = `${workspace}/${inputs.filePath}`;
+
+        await prependComment(filePath, comment);
+    } catch (error) {
+        core.setFailed(error.message)
+    }
+}
+
+interface Inputs {
+    name: string,
+    sha: string,
+    comment: string,
+    repoLink: string,
+    filePath: string
+}
+
+const formatComment = ({ name, sha, comment, repoLink }: Inputs): string => `
+/**
+ * ${name} - Edmonton Christian Community Church
+ * Created via commit ${sha} at ${repoLink}
+ * ${comment}
+ * ${repoLink}/commit/${sha}
+ */
+
+`
 
 run()

@@ -2,6 +2,10 @@
 
 This Github Action adds a comment to the top of a bundled file. Based off of [@actions/typescript-action](https://github.com/actions/typescript-action).
 
+## DEPRECATION NOTICE
+
+I used this action back when I was bundling the code in the [components](https://github.com/e3c-summer-worker/components/) repo and hosting it on Github, to be cached by the [jsDelivr CDN](https://www.jsdelivr.com/). I'm no longer using this action, so I'll archive it for now.
+
 ## Examples
 
 Add a comment to the top of `build/mobilenav-elm.js`
